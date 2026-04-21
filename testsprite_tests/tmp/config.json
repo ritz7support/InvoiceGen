@@ -1,0 +1,22 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:3000",
+  "loginUser": "support@ritz7.com",
+  "loginPassword": "123456",
+  "executionArgs": {
+    "projectName": "Invoice-Gen",
+    "projectPath": "g:\\My Drive\\ABCD\\1000-days challenge\\Day-495 Antigravity Day-4\\Invoice-Gen",
+    "testIds": [
+      "TC007"
+    ],
+    "additionalInstruction": "Testing TC007 specifically to verify the new 'Continue as Guest' flow and line item calculations.",
+    "serverMode": "production",
+    "envs": {
+      "API_KEY": "sk-user-FXa_g2x__HiGwor7XTzQExWtqaz_wQA_S05ecnJRECwS4mWMCc4-xFr-a7ZzBC0VrQQlD_xSAus6vqQ1oSqU8a-bOjjriRX8jDDzwbGUKmjb8SslwxLOUuhuHZ5CYVATRfM"
+    }
+  },
+  "serverPort": 56123,
+  "proxy": "http://b37ffcb3-9df9-4a24-88ff-ea6930c725c3:vtIr6XMQAMakWD0T9J994bHywBc1k8ZI@tun.testsprite.com:8080"
+}

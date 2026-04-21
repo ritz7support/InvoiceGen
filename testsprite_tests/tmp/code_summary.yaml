@@ -1,0 +1,40 @@
+version: "2"
+type: frontend
+tech_stack:
+  - javascript
+  - html
+  - css
+  - vanilla
+routes:
+  - path: /
+    file: index.html
+    auth_required: false
+    description: Main application page containing landing overlay, form editor, and dashboard.
+features:
+  - name: Authentication
+    description: Email/Password login and signup, with Google OAuth option using Supabase.
+    files:
+      - index.html
+      - auth.js
+    entry_route: /
+    user_interactions:
+      - Click 'Sign In' to open auth modal
+      - Fill email and password to login/signup
+      - Click 'Continue with Google' to authenticate via OAuth
+      - Click 'Try Free' or 'Start Building Your Invoice' to enter without auth
+    api_calls:
+      - method: POST
+        endpoint: /supabase/auth
+    auth_required: false
+  - name: Create Invoice
+    description: Form to enter invoice details, client info, and line items, updating preview live.
+    files:
+      - index.html
+      - app.js
+    entry_route: /
+    user_interactions:
+      - Fill sender and receiver details
+      - Click 'Add Line Item' and fill details
+      - Click 'Download PDF' to export invoice
+    auth_required: false
+known_limitations: []

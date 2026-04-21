@@ -140,12 +140,24 @@ window.openAuthModal = function (mode) {
   });
 };
 
+var closeTimeout = null;
+
 window.closeAuthModal = function () {
   var r = getAuthRefs();
   if (!r.modal) return;
+  
+  if (closeTimeout) {
+    clearTimeout(closeTimeout);
+    closeTimeout = null;
+  }
+
   r.modal.classList.remove('show');
+  
   // Re-hide after transition (matches var(--t-base) = 0.25s)
-  setTimeout(function () { r.modal.classList.add('hidden'); }, 300);
+  closeTimeout = setTimeout(function () { 
+    r.modal.classList.add('hidden'); 
+    closeTimeout = null;
+  }, 300);
 };
 
 window.toggleAuthMode = function () {

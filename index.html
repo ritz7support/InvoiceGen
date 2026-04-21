@@ -3,10 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>InvoiceGen — Professional Invoice Maker</title>
-  <meta name="description" content="Create professional, high-quality PDF invoices instantly. Free, browser-based invoice generator with live preview and GST support." />
 
-  <!-- Google Fonts -->
+  <!-- ═══ Primary Meta Tags ═══ -->
+  <title>InvoiceGen — Professional Invoice Maker</title>
+  <meta name="title"       content="InvoiceGen — Professional Invoice Maker" />
+  <meta name="description" content="Create professional, print-ready PDF invoices in seconds. InvoiceGen offers a live preview editor, GST support, logo upload, and cloud sync — completely free, right in your browser." />
+  <meta name="keywords"    content="invoice generator, PDF invoice, free invoice maker, GST invoice, invoice template, online invoice, billing software" />
+  <meta name="author"      content="InvoiceGen" />
+  <meta name="robots"      content="index, follow" />
+  <link rel="canonical"    href="https://ritz7support.github.io/InvoiceGen/" />
+
+  <!-- ═══ Favicon ═══ -->
+  <link rel="icon"             type="image/svg+xml"  href="favicon.svg" />
+  <link rel="alternate icon"   type="image/png"      href="favicon.png" />
+  <link rel="apple-touch-icon"                       href="favicon.png" />
+  <meta name="theme-color" content="#e03131" />
+
+  <!-- ═══ Open Graph / Facebook ═══ -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://ritz7support.github.io/InvoiceGen/" />
+  <meta property="og:title"       content="InvoiceGen — Professional Invoice Maker" />
+  <meta property="og:description" content="Create professional, print-ready PDF invoices in seconds. Live preview, GST support, logo upload, and cloud sync — free &amp; browser-based." />
+  <meta property="og:image"       content="https://ritz7support.github.io/InvoiceGen/favicon.png" />
+  <meta property="og:site_name"   content="InvoiceGen" />
+
+  <!-- ═══ Twitter Card ═══ -->
+  <meta name="twitter:card"        content="summary" />
+  <meta name="twitter:title"       content="InvoiceGen — Professional Invoice Maker" />
+  <meta name="twitter:description" content="Create professional, print-ready PDF invoices in seconds. Live preview, GST support, logo upload, and cloud sync — free &amp; browser-based." />
+  <meta name="twitter:image"       content="https://ritz7support.github.io/InvoiceGen/favicon.png" />
+
+  <!-- ═══ Google Fonts ═══ -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -41,7 +68,7 @@
           <button id="landing-signin-nav-btn" class="btn btn-ghost" title="Sign In" onclick="openAuthModal()">
             Sign In
           </button>
-          <button id="landing-cta-nav-btn" class="btn btn-primary" onclick="requireAuthToEnter()">
+          <button id="landing-cta-nav-btn" class="btn btn-primary" onclick="enterApp()">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1l6 6-6 6M1 7h12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Try Free
           </button>
@@ -74,7 +101,7 @@
         </p>
 
         <div class="hero-actions">
-          <button id="landing-hero-cta-btn" class="btn btn-primary btn-lg" onclick="requireAuthToEnter()">
+          <button id="landing-hero-cta-btn" class="btn btn-primary btn-lg" onclick="enterApp()">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l7 6.5-7 6.5M1.5 8h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Start Building Your Invoice
           </button>
@@ -233,7 +260,7 @@
       <div class="landing-section-inner cta-banner-inner">
         <h2 class="cta-banner-title">Ready to Create Your First Invoice?</h2>
         <p class="cta-banner-sub">Free forever. No account needed. Your data stays on your device.</p>
-        <button id="landing-bottom-cta-btn" class="btn btn-primary btn-lg" onclick="requireAuthToEnter()">
+        <button id="landing-bottom-cta-btn" class="btn btn-primary btn-lg" onclick="enterApp()">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l7 6.5-7 6.5M1.5 8h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Open Invoice Builder
           </button>
@@ -275,7 +302,7 @@
     </div>
 
     <div class="header-controls">
-      <div class="currency-wrapper">
+      <div class="currency-wrapper" id="editor-currency-wrapper">
         <label for="currency-select" class="sr-only">Currency</label>
         <select id="currency-select" class="currency-select">
           <option value="₹">₹ INR</option>
@@ -286,13 +313,16 @@
           <option value="A$">A$ AUD</option>
         </select>
       </div>
-      <button id="reset-btn" class="btn btn-ghost">
+      <button id="reset-btn" class="btn btn-ghost" title="Reset Invoice">
         <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1.5 7.5a6 6 0 1 1 1.2 3.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M1.5 3.5v4h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Reset
       </button>
       <button id="download-btn" class="btn btn-primary">
         <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M7.5 1v9M4 7l3.5 3.5L11 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M1.5 12h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
         <span id="download-label">Download PDF</span>
+      </button>
+      </button>
+      <button id="nav-dashboard-btn" class="btn btn-outline" style="display:none;" onclick="showDashboard()">
+        Dashboard
       </button>
       <button id="signout-btn" class="btn btn-outline" style="display:none;" onclick="signOut()">
         Sign Out
@@ -300,8 +330,50 @@
     </div>
   </header>
 
+  <!-- ═══════════════ DASHBOARD ═══════════════ -->
+  <main class="dashboard-main" id="dashboard-main" style="display:none;">
+    <div class="dashboard-header">
+      <div>
+        <h2 class="dashboard-title">Your Invoices</h2>
+        <p class="dashboard-subtitle">Manage and track all your created invoices.</p>
+      </div>
+      <button class="btn btn-primary" onclick="createNewInvoice()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        &nbsp;Create New Invoice
+      </button>
+    </div>
+
+    <div class="dashboard-stats">
+      <div class="stat-card">
+        <h3 class="stat-label">Total Invoices</h3>
+        <p class="stat-value" id="stat-total-count">0</p>
+      </div>
+      <div class="stat-card">
+        <h3 class="stat-label">Total Amount Billed</h3>
+        <p class="stat-value" id="stat-total-amount">₹ 0.00</p>
+      </div>
+    </div>
+
+    <div class="dashboard-table-container">
+      <table class="dashboard-table">
+        <thead>
+          <tr>
+            <th>Invoice No.</th>
+            <th>Date</th>
+            <th>Client</th>
+            <th>Amount</th>
+            <th style="text-align:right;">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="dashboard-table-body">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
   <!-- ═══════════════ MAIN APP GRID ═══════════════ -->
-  <main class="app-main">
+  <main class="app-main" id="editor-main" style="display:none;">
 
     <!-- ──────── FORM PANEL (LEFT) ──────── -->
     <aside class="form-panel" id="form-panel">
@@ -716,9 +788,16 @@
           </button>
         </form>
 
-        <div class="auth-footer">
-          <span id="auth-switch-text">Don't have an account?</span>
-          <button id="auth-toggle-btn" type="button" class="btn btn-link" onclick="toggleAuthMode()">Sign Up</button>
+        <div class="auth-footer" style="flex-direction: column; gap: 12px;">
+          <div>
+            <span id="auth-switch-text">Don't have an account?</span>
+            <button id="auth-toggle-btn" type="button" class="btn btn-link" onclick="toggleAuthMode()">Sign Up</button>
+          </div>
+          <div style="border-top: 1px solid var(--border-soft); width: 100%; padding-top: 12px; text-align: center;">
+            <button type="button" class="btn btn-link" onclick="closeAuthModal(); enterApp();" style="opacity: 0.7; font-size: 0.85rem;">
+              Continue as Guest (No Account Required)
+            </button>
+          </div>
         </div>
       </div>
     </div>

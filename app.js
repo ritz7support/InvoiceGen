@@ -6,6 +6,7 @@
 
 /* ══════════════════════════ STATE ═══════════════════════ */
 const DEFAULT_STATE = {
+  id: null,
   currency: '₹',
   invoiceNumber: '',
   invoiceDate: '',
@@ -45,43 +46,234 @@ function debounceSaveToCloud() {
   cloudSaveTimeout = setTimeout(saveToCloud, 2000);
 }
 
+let isSaving = false;
+let pendingSave = false;
+
 async function saveToCloud() {
   if (!supabase) return;
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) return;
 
+  if (isSaving) {
+    pendingSave = true;
+    return;
+  }
+  isSaving = true;
+  pendingSave = false;
+
   try {
-    await supabase.from('invoices').upsert({
+    let subtotal = 0;
+    let total_gst = 0;
+    state.items.forEach(it => {
+      const amt = parseFloat(it.amount) || 0;
+      const gst = parseFloat(it.gst) || 0;
+      subtotal += amt;
+      total_gst += (amt * gst) / 100;
+    });
+
+    const dbInvoice = {
       user_id: session.user.id,
-      invoice_data: state,
+      invoice_number: state.invoiceNumber,
+      invoice_date: state.invoiceDate || null,
+      subject: state.subject,
+      currency: state.currency,
+      from_name: state.from.name,
+      from_company: state.from.company,
+      from_email: state.from.email,
+      from_phone: state.from.phone,
+      from_address: state.from.address,
+      logo_base64: state.logo,
+      to_name: state.to.name,
+      to_email: state.to.email,
+      to_address: state.to.address,
+      description: state.description,
+      bullets: state.bullets,
+      payment_mode: state.payment.mode,
+      payment_account: state.payment.account,
+      payment_ifsc: state.payment.ifsc,
+      payment_upi: state.payment.upi,
+      payment_pan: state.payment.pan,
+      payment_email: state.payment.email,
+      payment_phone: state.payment.phone,
+      payment_phone_note: state.payment.note,
+      closing_message: state.closing.message,
+      closing_name: state.closing.name,
+      subtotal: subtotal,
+      total_gst: total_gst,
+      grand_total: subtotal + total_gst,
       updated_at: new Date().toISOString()
-    }, { onConflict: 'user_id' });
+    };
+
+    if (state.id) {
+      dbInvoice.id = state.id;
+      const { error: updErr } = await supabase.from('invoices').update(dbInvoice).eq('id', state.id);
+      if (updErr) throw updErr;
+    } else {
+      const { data, error: insErr } = await supabase.from('invoices').insert(dbInvoice).select('id').single();
+      if (insErr) throw insErr;
+      if (data) state.id = data.id;
+    }
+
+    if (state.id) {
+      await supabase.from('invoice_items').delete().eq('invoice_id', state.id);
+      
+      if (state.items.length > 0) {
+        const dbItems = state.items.map((it, i) => ({
+          invoice_id: state.id,
+          user_id: session.user.id,
+          sort_order: i,
+          description: it.desc || '',
+          amount: parseFloat(it.amount) || 0,
+          gst_pct: parseFloat(it.gst) || 0
+        }));
+        await supabase.from('invoice_items').insert(dbItems);
+      }
+    }
   } catch (err) {
     console.error('Cloud Save Error:', err);
+  } finally {
+    isSaving = false;
+    if (pendingSave) debounceSaveToCloud();
   }
 }
 
-async function loadFromCloud() {
+async function fetchDashboardData() {
   if (!supabase) return;
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) return;
 
   try {
-    const { data, error } = await supabase
+    const { data: invoices, error } = await supabase
       .from('invoices')
-      .select('invoice_data')
+      .select('*, invoice_items(*)')
       .eq('user_id', session.user.id)
-      .maybeSingle();
+      .order('updated_at', { ascending: false });
 
     if (error) throw error;
-    if (data && data.invoice_data) {
-      state = deepMerge(deepClone(DEFAULT_STATE), data.invoice_data);
-      populateFormFromState();
-      showToast('✓ Data synced from cloud');
-    }
+    
+    window.allInvoices = invoices || [];
+    renderDashboard();
   } catch (err) {
-    console.error('Cloud Load Error:', err);
+    console.error('Fetch Dashboard Error:', err);
   }
+}
+
+window.allInvoices = [];
+
+window.showDashboard = function() {
+  document.getElementById('dashboard-main').style.display = 'block';
+  document.getElementById('editor-main').style.display = 'none';
+  document.getElementById('nav-dashboard-btn').style.display = 'none';
+  document.getElementById('editor-currency-wrapper').style.display = 'none';
+  document.getElementById('reset-btn').style.display = 'none';
+  document.getElementById('download-btn').style.display = 'none';
+  fetchDashboardData();
+};
+
+window.showEditor = function() {
+  document.getElementById('dashboard-main').style.display = 'none';
+  document.getElementById('editor-main').style.display = 'grid';
+  document.getElementById('nav-dashboard-btn').style.display = 'inline-flex';
+  document.getElementById('editor-currency-wrapper').style.display = 'block';
+  document.getElementById('reset-btn').style.display = 'inline-flex';
+  document.getElementById('download-btn').style.display = 'inline-flex';
+  populateFormFromState();
+  updatePreview();
+};
+
+window.createNewInvoice = function() {
+  state = deepClone(DEFAULT_STATE);
+  state.invoiceDate = new Date().toISOString().slice(0, 10);
+  refs.logoUpload.value = '';
+  if (refs.logoPreviewImg) refs.logoPreviewImg.src = '';
+  if (refs.logoPreviewWrapper) refs.logoPreviewWrapper.classList.add('hidden');
+  if (refs.logoPlaceholder) refs.logoPlaceholder.style.display = 'flex';
+  
+  const bulletsCont = document.getElementById('bullets-container');
+  if (bulletsCont) bulletsCont.innerHTML = '';
+  
+  const itemsCont = document.getElementById('items-container');
+  if (itemsCont) itemsCont.innerHTML = '';
+  
+  addItem();
+  showEditor();
+};
+
+window.editInvoice = function(id) {
+  const inv = window.allInvoices.find(i => i.id === id);
+  if (!inv) return;
+  state = {
+    id: inv.id,
+    currency: inv.currency || '₹',
+    invoiceNumber: inv.invoice_number || '',
+    invoiceDate: inv.invoice_date || '',
+    subject: inv.subject || '',
+    logo: inv.logo_base64 || null,
+    from: {
+      name: inv.from_name || '', company: inv.from_company || '', email: inv.from_email || '', phone: inv.from_phone || '', address: inv.from_address || ''
+    },
+    to: {
+      name: inv.to_name || '', email: inv.to_email || '', address: inv.to_address || ''
+    },
+    description: inv.description || '',
+    bullets: inv.bullets || [],
+    payment: {
+      mode: inv.payment_mode || '', account: inv.payment_account || '', ifsc: inv.payment_ifsc || '', upi: inv.payment_upi || '', pan: inv.payment_pan || '', email: inv.payment_email || '', phone: inv.payment_phone || '', note: inv.payment_phone_note || ''
+    },
+    closing: { message: inv.closing_message || 'Kindly process the payment for the above-mentioned work.', name: inv.closing_name || '' }
+  };
+  
+  if (inv.invoice_items && inv.invoice_items.length > 0) {
+    state.items = inv.invoice_items.sort((a,b) => a.sort_order - b.sort_order).map(it => ({
+      desc: it.description || '', amount: it.amount != null ? it.amount.toString() : '', gst: it.gst_pct != null ? it.gst_pct.toString() : '0'
+    }));
+  } else {
+    state.items = [];
+  }
+  
+  const bulletsCont = document.getElementById('bullets-container');
+  if (bulletsCont) bulletsCont.innerHTML = '';
+  const itemsCont = document.getElementById('items-container');
+  if (itemsCont) itemsCont.innerHTML = '';
+  
+  populateFormFromState();
+  if (state.items.length === 0) addItem();
+  showEditor();
+};
+
+function renderDashboard() {
+  const tbody = document.getElementById('dashboard-table-body');
+  if (!tbody) return;
+  
+  tbody.innerHTML = '';
+  
+  let totalCount = window.allInvoices.length;
+  let totalAmount = 0;
+  
+  if (totalCount === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 30px;">No invoices found. Create one to get started!</td></tr>`;
+  } else {
+    window.allInvoices.forEach(inv => {
+      totalAmount += parseFloat(inv.grand_total || 0);
+      const statusBadge = inv.pdf_url ? '<span class="badge sent">Generated</span>' : '<span class="badge draft">Draft</span>';
+      
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><strong>${escapeHtml(inv.invoice_number || 'Untitled')}</strong> <div style="margin-top: 6px;">${statusBadge}</div></td>
+        <td>${fmtDate(inv.invoice_date)}</td>
+        <td>${escapeHtml(inv.to_name || '—')}</td>
+        <td><strong>${escapeHtml(inv.currency)} ${parseFloat(inv.grand_total || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
+        <td class="action-btns">
+          <button class="btn btn-outline btn-sm" onclick="editInvoice('${inv.id}')">Edit</button>
+          ${inv.pdf_url ? `<a href="${inv.pdf_url}" target="_blank" class="btn btn-primary btn-sm">PDF</a>` : `<button class="btn btn-ghost btn-sm" disabled>PDF</button>`}
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+  
+  document.getElementById('stat-total-count').textContent = totalCount;
+  document.getElementById('stat-total-amount').textContent = totalAmount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 function loadFromStorage() {
@@ -748,6 +940,13 @@ async function exportPDF() {
   const preview = $('invoice-preview');
   if (!preview) return;
 
+  // Validate line items
+  const hasInvalidItems = state.items.some(item => item.amount <= 0);
+  if (state.items.length > 0 && hasInvalidItems) {
+    showToast('⚠ Please provide a valid amount > 0 for all line items before exporting.');
+    return;
+  }
+
   // Button loading state
   refs.downloadLabel.textContent = 'Generating…';
   refs.downloadBtn.disabled = true;
@@ -807,7 +1006,28 @@ async function exportPDF() {
   };
 
   try {
+    const pdfBlob = await html2pdf().set(opt).from(clone).output('blob');
     await html2pdf().set(opt).from(clone).save();
+
+    if (state.id && supabase) {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        const filePath = `${session.user.id}/${state.id}_${Date.now()}.pdf`;
+        const { error: uploadError } = await supabase.storage.from('invoices').upload(filePath, pdfBlob, { 
+          contentType: 'application/pdf', 
+          upsert: true 
+        });
+        
+        if (!uploadError) {
+          const { data: publicUrlData } = supabase.storage.from('invoices').getPublicUrl(filePath);
+          await supabase.from('invoices').update({ 
+            pdf_url: publicUrlData.publicUrl, 
+            pdf_path: filePath 
+          }).eq('id', state.id);
+        }
+      }
+    }
+
     showToast('✓ Invoice downloaded successfully!');
   } catch (err) {
     console.error('PDF export failed:', err);
@@ -832,37 +1052,46 @@ function resetForm() {
 }
 
 /* ══════════════════════ INIT ═════════════════════════════ */
-function init() {
-  // Load state from storage (or use defaults)
-  loadFromStorage();
-
-  // Set default date to today if empty
-  if (!state.invoiceDate) {
-    state.invoiceDate = new Date().toISOString().slice(0, 10);
-  }
-
-  // Init accordion toggles
+async function init() {
   initAccordion();
-
-  // Bind all form events
   bindFormEvents();
 
-  // Populate form inputs from state
-  populateFormFromState();
-
-  // Add default first line item if none
-  if (state.items.length === 0) {
-    addItem();
+  if (!supabase) {
+    // offline mode
+    loadFromStorage();
+    if (!state.invoiceDate) state.invoiceDate = new Date().toISOString().slice(0, 10);
+    populateFormFromState();
+    if (state.items.length === 0) addItem();
+    showEditor();
+    let nDb = document.getElementById('nav-dashboard-btn');
+    if (nDb) nDb.style.display = 'none'; // force hide
+    return;
   }
 
-  // Load from cloud if session exists (to sync across devices)
-  loadFromCloud();
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) {
+    // guest mode
+    loadFromStorage();
+    if (!state.invoiceDate) state.invoiceDate = new Date().toISOString().slice(0, 10);
+    populateFormFromState();
+    if (state.items.length === 0) addItem();
+    showEditor(); 
+    let nDb = document.getElementById('nav-dashboard-btn');
+    if (nDb) nDb.style.display = 'none'; // force hide
+  } else {
+    // logged in, populate dashboard
+    await fetchDashboardData();
+    if (window.allInvoices && window.allInvoices.length > 0) {
+      showDashboard();
+    } else {
+      window.createNewInvoice();
+    }
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   const overlay = document.getElementById('landing-overlay');
   
-  // If overlay is missing OR already hidden (e.g. by auth script), init immediately
   if (!overlay || overlay.style.display === 'none' || overlay.classList.contains('hidden')) {
     if (!window._appInitialised) {
       window._appInitialised = true;

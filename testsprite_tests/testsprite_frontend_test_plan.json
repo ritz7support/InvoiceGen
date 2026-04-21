@@ -1,0 +1,375 @@
+[
+  {
+    "id": "TC001",
+    "title": "Guest creates an invoice with live preview and downloads PDF",
+    "description": "Verifies a guest can complete the core invoice editor loop, see the preview and totals update, and trigger PDF download.",
+    "category": "Invoice Editor & Live Preview",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Choose to continue without signing in"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the sender details with valid information"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the client details with valid information"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the invoice subject with a short value"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the invoice description with a short value"
+      },
+      {
+        "type": "action",
+        "description": "Add a line item"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the line item description with Consulting services"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the line item amount with 1200"
+      },
+      {
+        "type": "action",
+        "description": "Export the invoice to PDF"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a PDF download is initiated"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC002",
+    "title": "Export is blocked when a line item amount is blank or non-numeric",
+    "description": "Verifies invalid line item amounts prevent PDF export and show a blocking validation error.",
+    "category": "Invoice Editor & Live Preview",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Choose to continue without signing in"
+      },
+      {
+        "type": "action",
+        "description": "Add a line item"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the line item description with Item with invalid amount"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the line item amount with non-numeric text"
+      },
+      {
+        "type": "action",
+        "description": "Attempt to export the invoice to PDF"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a blocking validation error is visible and export does not proceed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC003",
+    "title": "Continue without signing in to reach the invoice editor",
+    "description": "Verifies a guest can bypass authentication and reach the invoice editor successfully.",
+    "category": "Authentication (Email/Password)",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Choose to continue without signing in"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the invoice editor is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC004",
+    "title": "Correcting an invalid amount enables successful export",
+    "description": "Verifies fixing an invalid line item amount removes the export block and allows PDF download.",
+    "category": "Invoice Editor & Live Preview",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Choose to continue without signing in"
+      },
+      {
+        "type": "action",
+        "description": "Add a line item"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the line item description with Fixable amount item"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the line item amount with non-numeric text"
+      },
+      {
+        "type": "action",
+        "description": "Attempt to export the invoice to PDF"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the line item amount with 99.99"
+      },
+      {
+        "type": "action",
+        "description": "Export the invoice to PDF"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a PDF download is initiated"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC005",
+    "title": "Email/password submission leads to invoice editor",
+    "description": "Verifies a user can submit email and password in the authentication modal and reach the invoice editor.",
+    "category": "Authentication (Email/Password)",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Open the authentication modal"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the credentials"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the invoice editor is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC006",
+    "title": "Totals and preview stay consistent after editing and removing line items",
+    "description": "Verifies editing amounts/descriptions and removing a line item updates totals and the live preview immediately before export.",
+    "category": "Invoice Editor & Live Preview",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Choose to continue without signing in"
+      },
+      {
+        "type": "action",
+        "description": "Add a line item"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the line item description with Item 1"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the line item amount with 400"
+      },
+      {
+        "type": "action",
+        "description": "Add a second line item"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the second line item description with Item 2"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the second line item amount with 600"
+      },
+      {
+        "type": "action",
+        "description": "Edit the second line item amount to 500"
+      },
+      {
+        "type": "action",
+        "description": "Remove the first line item"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the invoice total in the live preview reflects the latest line items only"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC007",
+    "title": "Multiple line items update totals automatically",
+    "description": "Verifies adding multiple line items recalculates totals immediately in the live preview.",
+    "category": "Invoice Editor & Live Preview",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Choose to continue without signing in"
+      },
+      {
+        "type": "action",
+        "description": "Add a line item"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the line item description with Item A"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the line item amount with 100"
+      },
+      {
+        "type": "action",
+        "description": "Add a second line item"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the second line item description with Item B"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the second line item amount with 250"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the invoice total in the live preview reflects the sum of all line items"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC008",
+    "title": "Optional subject and description can be left empty without breaking preview",
+    "description": "Verifies leaving optional fields empty still produces a coherent live preview and allows PDF export when required fields are valid.",
+    "category": "Invoice Editor & Live Preview",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Choose to continue without signing in"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the sender details with valid information"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the client details with valid information"
+      },
+      {
+        "type": "action",
+        "description": "Clear the invoice subject field"
+      },
+      {
+        "type": "action",
+        "description": "Clear the invoice description field"
+      },
+      {
+        "type": "action",
+        "description": "Add a line item"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the line item description with Basic service"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the line item amount with 50"
+      },
+      {
+        "type": "action",
+        "description": "Export the invoice to PDF"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a PDF download is initiated"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC009",
+    "title": "Auth modal shows validation errors for malformed credentials",
+    "description": "Verifies malformed email and invalid password inputs are blocked with visible validation feedback in the authentication modal.",
+    "category": "Authentication (Email/Password)",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Open the authentication modal"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with invalid-email-format"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with a short invalid password"
+      },
+      {
+        "type": "action",
+        "description": "Submit the credentials"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a form validation error is visible"
+      }
+    ],
+    "priority": "Low"
+  }
+]

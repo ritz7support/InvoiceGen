@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>InvoiceGen | Create Invoice</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#060e20",
+                        "inverse-on-surface": "#283044",
+                        "on-surface": "#dae2fd",
+                        "tertiary-fixed": "#c4e7ff",
+                        "on-tertiary": "#00354a",
+                        "on-secondary-container": "#a7b6cc",
+                        "background": "#0b1326",
+                        "surface-tint": "#bdc2ff",
+                        "on-error": "#690005",
+                        "on-error-container": "#ffdad6",
+                        "primary-container": "#7c87f3",
+                        "primary-fixed": "#e0e0ff",
+                        "on-primary-fixed": "#000767",
+                        "on-background": "#dae2fd",
+                        "on-tertiary-fixed-variant": "#004c69",
+                        "tertiary-fixed-dim": "#7bd0ff",
+                        "error-container": "#93000a",
+                        "primary-fixed-dim": "#bdc2ff",
+                        "surface-container-low": "#131b2e",
+                        "surface-bright": "#31394d",
+                        "surface-variant": "#2d3449",
+                        "tertiary-container": "#009bd1",
+                        "on-secondary": "#233143",
+                        "on-surface-variant": "#c7c4d7",
+                        "on-primary-fixed-variant": "#2f3aa3",
+                        "surface-dim": "#0b1326",
+                        "inverse-surface": "#dae2fd",
+                        "surface-container-high": "#222a3d",
+                        "on-secondary-fixed": "#0d1c2d",
+                        "on-primary": "#131e8c",
+                        "secondary-fixed-dim": "#b9c8de",
+                        "surface-container-highest": "#2d3449",
+                        "surface": "#0b1326",
+                        "on-primary-container": "#081486",
+                        "on-secondary-fixed-variant": "#39485a",
+                        "on-tertiary-fixed": "#001e2c",
+                        "secondary-container": "#39485a",
+                        "primary": "#bdc2ff",
+                        "outline": "#908fa0",
+                        "surface-container": "#171f33",
+                        "error": "#ffb4ab",
+                        "tertiary": "#7bd0ff",
+                        "on-tertiary-container": "#002d40",
+                        "outline-variant": "#464554",
+                        "secondary": "#b9c8de",
+                        "inverse-primary": "#4953bc",
+                        "secondary-fixed": "#d4e4fa"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0b1326;
+            color: #dae2fd;
+            font-family: 'Inter', sans-serif;
+        }
+        .editorial-headline {
+            font-family: 'Manrope', sans-serif;
+            letter-spacing: -0.02em;
+        }
+        .primary-gradient-cta {
+            background: linear-gradient(135deg, #bdc2ff 0%, #009bd1 100%);
+        }
+        .ghost-border {
+            border: 1px solid rgba(70, 69, 84, 0.15);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b1326;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #222a3d;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="flex min-h-screen">
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-full w-[240px] bg-[#0b1326] flex flex-col p-6 gap-8 shadow-[24px_0px_48px_rgba(6,14,32,0.4)] z-50">
+<div class="flex flex-col gap-1">
+<h1 class="text-2xl font-bold tracking-tighter text-[#bdc2ff] font-['Manrope']">InvoiceGen</h1>
+<p class="text-[10px] uppercase tracking-[0.2em] text-[#dae2fd]/40 font-bold">The Digital Ledger</p>
+</div>
+<div class="flex flex-col gap-2 flex-grow">
+<a class="flex items-center gap-3 px-4 py-3 text-[#dae2fd]/60 font-['Manrope'] tracking-tight text-sm font-medium hover:bg-[#222a3d] hover:text-[#dae2fd] transition-all scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#bdc2ff] bg-[#222a3d] rounded-lg font-['Manrope'] tracking-tight text-sm font-medium scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="add_notes">add_notes</span>
+                Create Invoice
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#dae2fd]/60 font-['Manrope'] tracking-tight text-sm font-medium hover:bg-[#222a3d] hover:text-[#dae2fd] transition-all scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+                History
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#dae2fd]/60 font-['Manrope'] tracking-tight text-sm font-medium hover:bg-[#222a3d] hover:text-[#dae2fd] transition-all scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+                Clients
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#dae2fd]/60 font-['Manrope'] tracking-tight text-sm font-medium hover:bg-[#222a3d] hover:text-[#dae2fd] transition-all scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+                Settings
+            </a>
+</div>
+<button class="primary-gradient-cta rounded-full py-3 px-6 text-on-primary-container font-bold text-sm transition-transform active:scale-95 shadow-lg shadow-primary/20">
+            New Invoice
+        </button>
+</nav>
+<!-- Main Wrapper -->
+<div class="ml-[240px] flex-grow flex flex-col">
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-240px)] h-16 bg-[#0b1326]/80 backdrop-blur-md border-b border-[#464554]/15 flex items-center justify-between px-8 z-40">
+<div class="flex items-center gap-4">
+<span class="text-sm font-medium text-on-surface-variant">Drafts / </span>
+<span class="text-sm font-bold text-primary editorial-headline">INV-2024-001</span>
+</div>
+<div class="flex items-center gap-6 font-['Inter'] text-sm">
+<div class="flex items-center gap-4">
+<button class="text-[#dae2fd]/70 hover:text-[#bdc2ff] transition-colors cursor-pointer active:opacity-80 flex items-center gap-2">
+<span class="material-symbols-outlined text-lg" data-icon="theme">palette</span>
+                        Theme
+                    </button>
+<button class="text-[#dae2fd]/70 hover:text-[#bdc2ff] transition-colors cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+<div class="h-6 w-px bg-outline-variant/20"></div>
+<button class="primary-gradient-cta px-5 py-2 rounded-full text-xs font-bold text-on-primary-container">
+                    Generate PDF
+                </button>
+<img alt="User Avatar" class="w-8 h-8 rounded-full border border-primary/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsA1N2NlChIRJiTGNKD6ckymi3l1nS_I2cYqirgMUvvrJ2I6MpzYWgvkFo8aN5Hgxx95ruhvj16s8IQvzD5_o5Q1L7vsDPWpwCWcisolyCIdWnn-XfDLS_QDCQ3-928kXbmrQGL7ZOD9T-D2I6CuaVNdvIxCcdKLaTaVcN8LRP_h0ac4bmMauQpRxld9SPIQ0jE4QCHDawDqpKiucf-0xVCUR42x-nXh6_qAx-DAqsg0aV05-HflogoWUQhJtf4E408-skkm3CwmI"/>
+</div>
+</header>
+<!-- Page Content -->
+<main class="mt-16 p-10 flex gap-10 min-h-[calc(100vh-64px)] overflow-y-auto">
+<!-- Left Column: Form -->
+<div class="w-3/5 flex flex-col gap-8 pb-20">
+<header class="mb-2">
+<h2 class="text-3xl font-extrabold editorial-headline text-on-surface">Invoice Details</h2>
+<p class="text-on-surface-variant text-sm mt-2">Configure your ledger entry for professional billing.</p>
+</header>
+<!-- Card 1: Invoice Details -->
+<section class="bg-surface-container-low p-8 rounded-xl ghost-border flex flex-col gap-6">
+<div class="flex items-center gap-4 border-b border-outline-variant/10 pb-4 mb-2">
+<span class="material-symbols-outlined text-primary" data-icon="receipt">receipt</span>
+<h3 class="font-bold editorial-headline uppercase tracking-widest text-xs opacity-60">Primary Information</h3>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div class="flex flex-col gap-2">
+<label class="text-[10px] font-bold uppercase text-on-surface-variant tracking-wider">Invoice Number</label>
+<input class="bg-surface-container-highest border-none border-b border-outline-variant/20 focus:ring-0 focus:border-primary text-on-surface px-4 py-3 rounded-lg transition-all" type="text" value="INV-2024-001"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-[10px] font-bold uppercase text-on-surface-variant tracking-wider">Issue Date</label>
+<input class="bg-surface-container-highest border-none border-b border-outline-variant/20 focus:ring-0 focus:border-primary text-on-surface px-4 py-3 rounded-lg transition-all" type="date" value="2024-05-24"/>
+</div>
+</div>
+</section>
+<!-- Card 2: Parties -->
+<section class="bg-surface-container-low p-8 rounded-xl ghost-border flex flex-col gap-6">
+<div class="flex items-center gap-4 border-b border-outline-variant/10 pb-4 mb-2">
+<span class="material-symbols-outlined text-primary" data-icon="handshake">handshake</span>
+<h3 class="font-bold editorial-headline uppercase tracking-widest text-xs opacity-60">Entity Details</h3>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div class="flex flex-col gap-2">
+<label class="text-[10px] font-bold uppercase text-on-surface-variant tracking-wider">From (Your Business)</label>
+<textarea class="bg-surface-container-highest border-none border-b border-outline-variant/20 focus:ring-0 focus:border-primary text-on-surface px-4 py-3 rounded-lg transition-all resize-none text-sm leading-relaxed" rows="4">InvoiceGen HQ
+123 Ledger Way, 
+San Francisco, CA 94103
+contact@invoicegen.com</textarea>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-[10px] font-bold uppercase text-on-surface-variant tracking-wider">To (Client)</label>
+<textarea class="bg-surface-container-highest border-none border-b border-outline-variant/20 focus:ring-0 focus:border-primary text-on-surface px-4 py-3 rounded-lg transition-all resize-none text-sm leading-relaxed" rows="4">Acme Corp Ltd.
+88 Innovation Blvd
+London, UK EC1V 9BD
+billing@acmecorp.com</textarea>
+</div>
+</div>
+</section>
+<!-- Card 3: Project Context -->
+<section class="bg-surface-container-low p-8 rounded-xl ghost-border flex flex-col gap-6">
+<div class="flex items-center gap-4 border-b border-outline-variant/10 pb-4 mb-2">
+<span class="material-symbols-outlined text-primary" data-icon="work">work</span>
+<h3 class="font-bold editorial-headline uppercase tracking-widest text-xs opacity-60">Project Context</h3>
+</div>
+<div class="flex flex-col gap-6">
+<div class="flex flex-col gap-2">
+<label class="text-[10px] font-bold uppercase text-on-surface-variant tracking-wider">Subject</label>
+<input class="bg-surface-container-highest border-none border-b border-outline-variant/20 focus:ring-0 focus:border-primary text-on-surface px-4 py-3 rounded-lg transition-all" placeholder="e.g. Brand Identity Design Phase 1" type="text"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-[10px] font-bold uppercase text-on-surface-variant tracking-wider">Project Description</label>
+<textarea class="bg-surface-container-highest border-none border-b border-outline-variant/20 focus:ring-0 focus:border-primary text-on-surface px-4 py-3 rounded-lg transition-all resize-none text-sm leading-relaxed" placeholder="Brief overview of the milestones covered in this billing cycle..." rows="3"></textarea>
+</div>
+</div>
+</section>
+<!-- Card 4: Items -->
+<section class="bg-surface-container-low p-8 rounded-xl ghost-border flex flex-col gap-6">
+<div class="flex items-center justify-between border-b border-outline-variant/10 pb-4 mb-2">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="list_alt">list_alt</span>
+<h3 class="font-bold editorial-headline uppercase tracking-widest text-xs opacity-60">Billable Items</h3>
+</div>
+<button class="text-primary text-xs font-bold hover:underline">+ Add Row</button>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Table Header -->
+<div class="grid grid-cols-[1fr_120px_100px] gap-6 px-4">
+<span class="text-[10px] font-bold uppercase text-on-surface-variant tracking-wider">Description</span>
+<span class="text-[10px] font-bold uppercase text-on-surface-variant tracking-wider text-right">Qty/Hours</span>
+<span class="text-[10px] font-bold uppercase text-on-surface-variant tracking-wider text-right">Amount</span>
+</div>
+<!-- Row 1 -->
+<div class="grid grid-cols-[1fr_120px_100px] gap-6 bg-surface-container-lowest p-4 rounded-lg items-center">
+<input class="bg-transparent border-none focus:ring-0 text-sm text-on-surface" type="text" value="UI/UX Design - Dashboard Interface"/>
+<input class="bg-transparent border-none focus:ring-0 text-sm text-on-surface text-right" type="text" value="40"/>
+<input class="bg-transparent border-none focus:ring-0 text-sm text-on-surface text-right font-bold" type="text" value="$2,400.00"/>
+</div>
+<!-- Row 2 -->
+<div class="grid grid-cols-[1fr_120px_100px] gap-6 bg-surface-container-lowest p-4 rounded-lg items-center">
+<input class="bg-transparent border-none focus:ring-0 text-sm text-on-surface" type="text" value="Logo Exploration &amp; Typography Specs"/>
+<input class="bg-transparent border-none focus:ring-0 text-sm text-on-surface text-right" type="text" value="15"/>
+<input class="bg-transparent border-none focus:ring-0 text-sm text-on-surface text-right font-bold" type="text" value="$900.00"/>
+</div>
+</div>
+<div class="flex justify-end pt-6 border-t border-outline-variant/10">
+<div class="flex flex-col gap-2 items-end">
+<div class="flex gap-8">
+<span class="text-xs text-on-surface-variant font-medium">Subtotal</span>
+<span class="text-xs text-on-surface font-bold">$3,300.00</span>
+</div>
+<div class="flex gap-8">
+<span class="text-xs text-on-surface-variant font-medium">Tax (10%)</span>
+<span class="text-xs text-on-surface font-bold">$330.00</span>
+</div>
+<div class="flex gap-8 mt-2">
+<span class="text-sm editorial-headline text-primary font-bold">Total Amount</span>
+<span class="text-xl editorial-headline text-primary font-extrabold">$3,630.00</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Live Preview -->
+<div class="w-2/5 sticky top-24 h-fit">
+<div class="flex flex-col gap-6">
+<div class="flex items-center justify-between px-2">
+<h3 class="text-sm font-bold editorial-headline uppercase tracking-widest opacity-60">Live Document Preview</h3>
+<div class="flex gap-2">
+<button class="p-2 rounded-full hover:bg-surface-container-high text-on-surface-variant">
+<span class="material-symbols-outlined text-lg" data-icon="zoom_in">zoom_in</span>
+</button>
+<button class="p-2 rounded-full hover:bg-surface-container-high text-on-surface-variant">
+<span class="material-symbols-outlined text-lg" data-icon="fullscreen">fullscreen</span>
+</button>
+</div>
+</div>
+<!-- A4 Document -->
+<div class="bg-white rounded-sm shadow-2xl overflow-hidden aspect-[1/1.414] w-full text-[#111827] flex flex-col p-[10%] relative">
+<!-- Watermark/Logo -->
+<div class="flex justify-between items-start mb-16">
+<div>
+<h4 class="text-2xl font-black tracking-tighter text-[#0b1326] font-['Manrope']">InvoiceGen</h4>
+<p class="text-[9px] uppercase tracking-widest font-bold text-gray-400 mt-1">Official Document</p>
+</div>
+<div class="text-right">
+<h5 class="text-3xl font-light text-gray-300">INVOICE</h5>
+<p class="text-xs font-bold mt-1">#INV-2024-001</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-10 mb-12">
+<div>
+<p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter mb-2">From</p>
+<p class="text-xs font-bold leading-relaxed">InvoiceGen HQ<br/>123 Ledger Way,<br/>San Francisco, CA 94103</p>
+</div>
+<div>
+<p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter mb-2">To</p>
+<p class="text-xs font-bold leading-relaxed">Acme Corp Ltd.<br/>88 Innovation Blvd<br/>London, UK EC1V 9BD</p>
+</div>
+</div>
+<div class="mb-10">
+<p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter mb-2">Subject</p>
+<p class="text-sm font-bold border-b border-gray-100 pb-2">Brand Identity Design Phase 1</p>
+</div>
+<div class="flex-grow">
+<table class="w-full text-left">
+<thead>
+<tr class="border-b-2 border-gray-900">
+<th class="py-3 text-[10px] font-black uppercase">Item Description</th>
+<th class="py-3 text-[10px] font-black uppercase text-right">Qty</th>
+<th class="py-3 text-[10px] font-black uppercase text-right">Total</th>
+</tr>
+</thead>
+<tbody class="text-xs">
+<tr class="border-b border-gray-100">
+<td class="py-4">UI/UX Design - Dashboard Interface</td>
+<td class="py-4 text-right">40</td>
+<td class="py-4 text-right font-bold">$2,400.00</td>
+</tr>
+<tr class="border-b border-gray-100">
+<td class="py-4">Logo Exploration &amp; Typography Specs</td>
+<td class="py-4 text-right">15</td>
+<td class="py-4 text-right font-bold">$900.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mt-10 border-t-2 border-gray-900 pt-6 flex justify-end">
+<div class="w-1/2 space-y-2">
+<div class="flex justify-between text-[10px] text-gray-500 font-bold uppercase">
+<span>Subtotal</span>
+<span>$3,300.00</span>
+</div>
+<div class="flex justify-between text-[10px] text-gray-500 font-bold uppercase">
+<span>Tax (10%)</span>
+<span>$330.00</span>
+</div>
+<div class="flex justify-between text-lg font-black pt-2 text-[#0b1326]">
+<span>Total</span>
+<span>$3,630.00</span>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-10 text-[8px] text-gray-400 font-medium italic border-t border-gray-100">
+                            Thank you for your business. Payment is due within 14 days of issue.
+                        </div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
