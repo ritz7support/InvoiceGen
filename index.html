@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InvoiceGen — Professional Invoice Maker</title>
+  <meta name="description" content="Create professional, high-quality PDF invoices instantly. Free, browser-based invoice generator with live preview and GST support." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════ LANDING PAGE OVERLAY ═══════════════ -->
+  <div id="landing-overlay" class="landing-overlay">
+
+    <!-- Landing Navbar -->
+    <nav class="landing-nav">
+      <div class="landing-nav-inner">
+        <div class="landing-brand">
+          <div class="brand-icon">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="28" height="28" rx="7" fill="#e03131"/>
+              <rect x="6" y="7" width="10" height="1.8" rx="0.9" fill="white"/>
+              <rect x="6" y="11" width="16" height="1.8" rx="0.9" fill="white" opacity="0.7"/>
+              <rect x="6" y="15" width="13" height="1.8" rx="0.9" fill="white" opacity="0.7"/>
+              <rect x="6" y="19" width="8" height="1.8" rx="0.9" fill="white" opacity="0.5"/>
+              <path d="M19 14.5L22.5 18L19 21.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">InvoiceGen</span>
+            <span class="brand-tagline">Professional Invoice Maker</span>
+          </div>
+        </div>
+        <div class="landing-nav-actions">
+          <button id="landing-signin-nav-btn" class="btn btn-ghost" title="Sign In" onclick="openAuthModal()">
+            Sign In
+          </button>
+          <button id="landing-cta-nav-btn" class="btn btn-primary" onclick="requireAuthToEnter()">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1l6 6-6 6M1 7h12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Try Free
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="landing-hero">
+      <div class="hero-bg-grid"></div>
+      <div class="hero-glow hero-glow-left"></div>
+      <div class="hero-glow hero-glow-right"></div>
+
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          <span>Free &amp; Browser-Based · No Install Required</span>
+        </div>
+
+        <h1 class="hero-title">
+          Create
+          <span class="hero-title-accent">Professional</span>
+          Invoices in Minutes
+        </h1>
+
+        <p class="hero-subtitle">
+          Fill in your details, watch your invoice build in real time,
+          and export a pixel-perfect PDF — instantly, right in your browser.
+          No signup needed, no data leaves your device.
+        </p>
+
+        <div class="hero-actions">
+          <button id="landing-hero-cta-btn" class="btn btn-primary btn-lg" onclick="requireAuthToEnter()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l7 6.5-7 6.5M1.5 8h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Start Building Your Invoice
+          </button>
+          <button id="landing-hero-signin-btn" class="btn btn-outline btn-lg" title="Sign In" onclick="openAuthModal()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M2 14c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Sign In
+          </button>
+        </div>
+
+        <p class="hero-disclaimer">Create a free account to automatically save your invoices to the cloud.</p>
+      </div>
+
+      <!-- Mock Preview Card -->
+      <div class="hero-preview-card">
+        <div class="hero-preview-bar">
+          <span class="hpb-dot hpb-red"></span>
+          <span class="hpb-dot hpb-yellow"></span>
+          <span class="hpb-dot hpb-green"></span>
+          <span class="hpb-label">Live Preview</span>
+          <span class="hpb-pulse"></span>
+        </div>
+        <div class="hero-preview-body">
+          <div class="hpb-row hpb-title-row">
+            <div class="hpb-logo-block"></div>
+            <div class="hpb-invoice-label">INVOICE</div>
+          </div>
+          <div class="hpb-divider"></div>
+          <div class="hpb-meta">
+            <div class="hpb-meta-line"><span class="hpb-key">Invoice #:</span><span class="hpb-val">INV-001</span></div>
+            <div class="hpb-meta-line"><span class="hpb-key">Date:</span><span class="hpb-val">6 April 2026</span></div>
+          </div>
+          <div class="hpb-parties">
+            <div class="hpb-party"><span class="hpb-key">From:</span><span class="hpb-skel hpb-skel-md"></span></div>
+            <div class="hpb-party"><span class="hpb-key">To:</span><span class="hpb-skel hpb-skel-sm"></span></div>
+          </div>
+          <div class="hpb-table">
+            <div class="hpb-thead">
+              <span>Description</span><span>Amount</span><span>GST</span><span>Total</span>
+            </div>
+            <div class="hpb-trow"><span class="hpb-skel hpb-skel-lg"></span><span>₹5,000</span><span>18%</span><span>₹5,900</span></div>
+            <div class="hpb-trow hpb-trow-alt"><span class="hpb-skel hpb-skel-md"></span><span>₹3,000</span><span>18%</span><span>₹3,540</span></div>
+          </div>
+          <div class="hpb-totals">
+            <div class="hpb-total-row"><span>Subtotal</span><span>₹8,000.00</span></div>
+            <div class="hpb-total-row"><span>Total GST</span><span>₹1,440.00</span></div>
+            <div class="hpb-total-row hpb-grand"><span>Grand Total</span><span>₹9,440.00</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="landing-features">
+      <div class="landing-section-inner">
+        <p class="landing-section-tag">Features</p>
+        <h2 class="landing-section-title">Everything You Need to Invoice Like a Pro</h2>
+        <p class="landing-section-sub">Powerful tools packed into a clean, distraction-free interface.</p>
+
+        <div class="features-grid">
+
+          <div class="feature-card">
+            <div class="feature-icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="2" width="18" height="18" rx="4" stroke="#e03131" stroke-width="1.6"/><path d="M7 11h8M7 7.5h5M7 14.5h4" stroke="#e03131" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <h3 class="feature-title">Real-Time Preview</h3>
+            <p class="feature-desc">Every keystroke updates your invoice instantly. What you see is exactly what gets exported — no surprises.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2v13M6 11l5 5 5-5" stroke="#e03131" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 18h16" stroke="#e03131" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </div>
+            <h3 class="feature-title">One-Click PDF Export</h3>
+            <p class="feature-desc">Export a crisp, professional PDF at any time. Pixel-perfect layout, ready to send to clients immediately.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="1.5" y="5.5" width="19" height="13" rx="3" stroke="#e03131" stroke-width="1.6"/><path d="M1.5 10h19" stroke="#e03131" stroke-width="1.4"/><rect x="4" y="13" width="4" height="2" rx="1" fill="#e03131"/></svg>
+            </div>
+            <h3 class="feature-title">GST &amp; Multi-Currency</h3>
+            <p class="feature-desc">Built-in GST calculations per line item, plus support for INR, USD, EUR, GBP, JPY and more.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="#e03131" stroke-width="1.6"/><path d="M8 11l2 2 4-4" stroke="#e03131" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h3 class="feature-title">Auto-Saved Locally</h3>
+            <p class="feature-desc">Your progress is automatically saved to your browser. Pick up exactly where you left off, every time.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="7" width="7" height="8" rx="2" stroke="#e03131" stroke-width="1.6"/><rect x="12" y="3" width="7" height="8" rx="2" stroke="#e03131" stroke-width="1.6"/><path d="M10 11h2M6.5 3v4M15.5 11v4" stroke="#e03131" stroke-width="1.4" stroke-linecap="round"/></svg>
+            </div>
+            <h3 class="feature-title">Logo &amp; Branding</h3>
+            <p class="feature-desc">Upload your company logo with drag &amp; drop. It appears instantly on your invoice, giving it a polished look.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M3 17l4-4 3 3 4-5 5 6" stroke="#e03131" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 4h16" stroke="#e03131" stroke-width="1.4" stroke-linecap="round"/></svg>
+            </div>
+            <h3 class="feature-title">Itemised Line Items</h3>
+            <p class="feature-desc">Add unlimited line items with individual GST rates. Subtotals and grand totals calculate automatically.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="landing-how">
+      <div class="landing-section-inner">
+        <p class="landing-section-tag">How It Works</p>
+        <h2 class="landing-section-title">3 Easy Steps to Your Perfect Invoice</h2>
+        <p class="landing-section-sub">No learning curve. You'll have a finished invoice in under 3 minutes.</p>
+
+        <div class="steps-track">
+          <div class="step-connector"></div>
+
+          <div class="step-card">
+            <div class="step-num">01</div>
+            <div class="step-icon-wrap">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M5 7h10M5 12h16M5 17h12" stroke="#e03131" stroke-width="1.7" stroke-linecap="round"/><rect x="1.5" y="2" width="23" height="22" rx="4" stroke="#e03131" stroke-width="1.5"/></svg>
+            </div>
+            <h3 class="step-title">Fill Your Details</h3>
+            <p class="step-desc">Enter your business info, client details, line items, and payment info using the guided form sections.</p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-num">02</div>
+            <div class="step-icon-wrap">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><rect x="1.5" y="3" width="11" height="20" rx="3" stroke="#e03131" stroke-width="1.5"/><rect x="14" y="3" width="10.5" height="20" rx="3" stroke="#e03131" stroke-width="1.5"/><path d="M5 9h4M5 13h3M16 9h5M16 13h3" stroke="#e03131" stroke-width="1.4" stroke-linecap="round"/></svg>
+            </div>
+            <h3 class="step-title">Watch it Build Live</h3>
+            <p class="step-desc">The live preview panel updates in real time as you type — every field, logo, and total reflected instantly.</p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-num">03</div>
+            <div class="step-icon-wrap">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 3v14M8 13l5 5 5-5" stroke="#e03131" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 21h18" stroke="#e03131" stroke-width="1.7" stroke-linecap="round"/></svg>
+            </div>
+            <h3 class="step-title">Export &amp; Send</h3>
+            <p class="step-desc">Hit Export PDF and download a professional, print-ready invoice. Send it to your client right away.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="landing-cta-banner">
+      <div class="cta-banner-glow"></div>
+      <div class="landing-section-inner cta-banner-inner">
+        <h2 class="cta-banner-title">Ready to Create Your First Invoice?</h2>
+        <p class="cta-banner-sub">Free forever. No account needed. Your data stays on your device.</p>
+        <button id="landing-bottom-cta-btn" class="btn btn-primary btn-lg" onclick="requireAuthToEnter()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l7 6.5-7 6.5M1.5 8h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Open Invoice Builder
+          </button>
+      </div>
+    </section>
+
+    <!-- Landing Footer -->
+    <footer class="landing-footer">
+      <div class="landing-section-inner landing-footer-inner">
+        <div class="landing-brand">
+          <div class="brand-icon" style="width:22px;height:22px;">
+            <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#e03131"/><rect x="6" y="7" width="10" height="1.8" rx="0.9" fill="white"/><rect x="6" y="11" width="16" height="1.8" rx="0.9" fill="white" opacity="0.7"/><rect x="6" y="15" width="13" height="1.8" rx="0.9" fill="white" opacity="0.7"/><rect x="6" y="19" width="8" height="1.8" rx="0.9" fill="white" opacity="0.5"/><path d="M19 14.5L22.5 18L19 21.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="brand-name" style="font-size:1rem;">InvoiceGen</span>
+        </div>
+        <p class="landing-footer-copy">© 2026 InvoiceGen. Built with ♥ — all processing happens in your browser.</p>
+      </div>
+    </footer>
+
+  </div><!-- #landing-overlay -->
+
+  <!-- ═══════════════ HEADER ═══════════════ -->
+  <header class="app-header">
+    <div class="header-brand">
+      <div class="brand-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="28" height="28" rx="7" fill="#e03131"/>
+          <rect x="6" y="7" width="10" height="1.8" rx="0.9" fill="white"/>
+          <rect x="6" y="11" width="16" height="1.8" rx="0.9" fill="white" opacity="0.7"/>
+          <rect x="6" y="15" width="13" height="1.8" rx="0.9" fill="white" opacity="0.7"/>
+          <rect x="6" y="19" width="8" height="1.8" rx="0.9" fill="white" opacity="0.5"/>
+          <path d="M19 14.5L22.5 18L19 21.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">InvoiceGen</span>
+        <span class="brand-tagline">Professional Invoice Maker</span>
+      </div>
+    </div>
+
+    <div class="header-controls">
+      <div class="currency-wrapper">
+        <label for="currency-select" class="sr-only">Currency</label>
+        <select id="currency-select" class="currency-select">
+          <option value="₹">₹ INR</option>
+          <option value="$">$ USD</option>
+          <option value="£">£ GBP</option>
+          <option value="€">€ EUR</option>
+          <option value="¥">¥ JPY</option>
+          <option value="A$">A$ AUD</option>
+        </select>
+      </div>
+      <button id="reset-btn" class="btn btn-ghost">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1.5 7.5a6 6 0 1 1 1.2 3.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M1.5 3.5v4h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Reset
+      </button>
+      <button id="download-btn" class="btn btn-primary">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M7.5 1v9M4 7l3.5 3.5L11 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M1.5 12h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span id="download-label">Download PDF</span>
+      </button>
+      <button id="signout-btn" class="btn btn-outline" style="display:none;" onclick="signOut()">
+        Sign Out
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══════════════ MAIN APP GRID ═══════════════ -->
+  <main class="app-main">
+
+    <!-- ──────── FORM PANEL (LEFT) ──────── -->
+    <aside class="form-panel" id="form-panel">
+
+      <!-- ▸ Section 01: Invoice Details -->
+      <div class="form-section open" id="section-meta">
+        <button class="section-header" data-target="meta">
+          <div class="section-title">
+            <span class="section-num">01</span>
+            <svg class="section-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="1.5" width="12" height="13" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M5 5h6M5 8h4M5 11h2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+            <span>Invoice Details</span>
+          </div>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="section-body" id="body-meta">
+          <div class="form-row two-col">
+            <div class="form-group">
+              <label for="invoice-number">Invoice Number</label>
+              <input type="text" id="invoice-number" placeholder="INV-001" />
+            </div>
+            <div class="form-group">
+              <label for="invoice-date">Invoice Date</label>
+              <input type="date" id="invoice-date" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="invoice-subject">Subject</label>
+            <input type="text" id="invoice-subject" placeholder="Invoice for Script Preparation and Recording Video – AI Tools" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ▸ Section 02: From (Sender) -->
+      <div class="form-section open" id="section-from">
+        <button class="section-header" data-target="from">
+          <div class="section-title">
+            <span class="section-num">02</span>
+            <svg class="section-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+            <span>From (Sender)</span>
+          </div>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="section-body" id="body-from">
+          <!-- Logo Upload -->
+          <div class="form-group">
+            <label>Logo / Brand Image</label>
+            <div class="logo-upload-area" id="logo-upload-area">
+              <input type="file" id="logo-upload" accept="image/*" hidden />
+              <div class="logo-placeholder" id="logo-placeholder">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="3" y="5" width="22" height="18" rx="3" stroke="currentColor" stroke-width="1.5"/><circle cx="9.5" cy="10.5" r="2" stroke="currentColor" stroke-width="1.3"/><path d="M3 19l6-5 4 4 3-3 6 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>Click or drag to upload logo</span>
+                <span class="logo-hint">PNG, JPG, SVG · Max 2 MB</span>
+              </div>
+              <div id="logo-preview-wrapper" class="logo-preview-wrapper hidden">
+                <img id="logo-preview-img" class="logo-preview-img" alt="Uploaded logo" />
+                <button type="button" id="logo-remove-btn" class="logo-remove-btn" aria-label="Remove logo">✕</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row two-col">
+            <div class="form-group">
+              <label for="from-name">Full Name</label>
+              <input type="text" id="from-name" placeholder="Jane Doe" />
+            </div>
+            <div class="form-group">
+              <label for="from-company">Company <span class="tag-optional">optional</span></label>
+              <input type="text" id="from-company" placeholder="Acme Corp" />
+            </div>
+          </div>
+          <div class="form-row two-col">
+            <div class="form-group">
+              <label for="from-email">Email</label>
+              <input type="email" id="from-email" placeholder="jane@example.com" />
+            </div>
+            <div class="form-group">
+              <label for="from-phone">Phone</label>
+              <input type="tel" id="from-phone" placeholder="+91 98765 43210" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="from-address">Address <span class="tag-optional">optional</span></label>
+            <textarea id="from-address" rows="2" placeholder="123 Street, City, State – 000000"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- ▸ Section 03: To (Client) -->
+      <div class="form-section" id="section-to">
+        <button class="section-header" data-target="to">
+          <div class="section-title">
+            <span class="section-num">03</span>
+            <svg class="section-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 13s1-4 6-4 6 4 6 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="8" cy="6" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M13 3l2 2-2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>To (Client)</span>
+          </div>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="section-body" id="body-to">
+          <div class="form-row two-col">
+            <div class="form-group">
+              <label for="to-name">Name / Company</label>
+              <input type="text" id="to-name" placeholder="Client Name or Company" />
+            </div>
+            <div class="form-group">
+              <label for="to-email">Email <span class="tag-optional">optional</span></label>
+              <input type="email" id="to-email" placeholder="client@company.com" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="to-address">Address <span class="tag-optional">optional</span></label>
+            <textarea id="to-address" rows="2" placeholder="Client's billing address..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- ▸ Section 04: Description -->
+      <div class="form-section" id="section-desc">
+        <button class="section-header" data-target="desc">
+          <div class="section-title">
+            <span class="section-num">04</span>
+            <svg class="section-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M3 7.5h10M3 11h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+            <span>Description</span>
+          </div>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="section-body" id="body-desc">
+          <div class="form-group">
+            <label for="description-text">Description Paragraph</label>
+            <textarea id="description-text" rows="4" placeholder="This invoice is for the work completed and delivered as per the requirement. The project included..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Bullet Points <span class="tag-optional">optional</span></label>
+            <div id="bullets-container" class="bullets-container"></div>
+            <button type="button" id="add-bullet-btn" class="btn btn-outline btn-sm">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v11M1 6.5h11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              Add Bullet Point
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ▸ Section 05: Line Items -->
+      <div class="form-section open" id="section-items">
+        <button class="section-header" data-target="items">
+          <div class="section-title">
+            <span class="section-num">05</span>
+            <svg class="section-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M2 6h12M6 6v8" stroke="currentColor" stroke-width="1.3"/></svg>
+            <span>Line Items</span>
+          </div>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="section-body" id="body-items">
+          <div class="items-table-wrapper">
+            <div class="items-col-header">
+              <span class="icol-desc">Description</span>
+              <span class="icol-amt">Amount</span>
+              <span class="icol-gst">GST %</span>
+              <span class="icol-total">Total</span>
+              <span class="icol-del"></span>
+            </div>
+            <div id="items-container" class="items-container"></div>
+          </div>
+          <button type="button" id="add-item-btn" class="btn btn-outline btn-sm" style="margin-top:10px">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v11M1 6.5h11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            Add Line Item
+          </button>
+          <div class="items-totals">
+            <div class="total-row"><span>Subtotal</span><span id="subtotal-display">—</span></div>
+            <div class="total-row"><span>Total GST</span><span id="gst-total-display">—</span></div>
+            <div class="total-row grand"><span>Grand Total</span><span id="grand-total-display">—</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ▸ Section 06: Payment Details -->
+      <div class="form-section" id="section-payment">
+        <button class="section-header" data-target="payment">
+          <div class="section-title">
+            <span class="section-num">06</span>
+            <svg class="section-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="4" width="13" height="9" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M1.5 7.5h13" stroke="currentColor" stroke-width="1.4"/><rect x="3.5" y="9.5" width="3" height="1.5" rx="0.5" fill="currentColor"/></svg>
+            <span>Payment Details</span>
+          </div>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="section-body" id="body-payment">
+          <div class="form-row two-col">
+            <div class="form-group">
+              <label for="pay-mode">Mode of Payment</label>
+              <input type="text" id="pay-mode" placeholder="Bank Transfer / UPI" />
+            </div>
+            <div class="form-group">
+              <label for="pay-account">Account Number</label>
+              <input type="text" id="pay-account" placeholder="XXXX XXXX XXXX XXXX" />
+            </div>
+          </div>
+          <div class="form-row two-col">
+            <div class="form-group">
+              <label for="pay-ifsc">IFSC Code</label>
+              <input type="text" id="pay-ifsc" placeholder="SBIN0001234" />
+            </div>
+            <div class="form-group">
+              <label for="pay-upi">UPI ID</label>
+              <input type="text" id="pay-upi" placeholder="name@upi" />
+            </div>
+          </div>
+          <div class="form-row two-col">
+            <div class="form-group">
+              <label for="pay-pan">PAN Number</label>
+              <input type="text" id="pay-pan" placeholder="ABCDE1234F" />
+            </div>
+            <div class="form-group">
+              <label for="pay-email">Email</label>
+              <input type="email" id="pay-email" placeholder="payment@example.com" />
+            </div>
+          </div>
+          <div class="form-row two-col">
+            <div class="form-group">
+              <label for="pay-phone">Phone Number</label>
+              <input type="tel" id="pay-phone" placeholder="+91 98765 43210" />
+            </div>
+            <div class="form-group">
+              <label for="pay-phone-note">Phone Note</label>
+              <input type="text" id="pay-phone-note" placeholder="PhonePe, Google Pay, Paytm" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ▸ Section 07: Closing -->
+      <div class="form-section" id="section-closing">
+        <button class="section-header" data-target="closing">
+          <div class="section-title">
+            <span class="section-num">07</span>
+            <svg class="section-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4l6 4 6-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><rect x="1.5" y="3.5" width="13" height="9" rx="2" stroke="currentColor" stroke-width="1.4"/></svg>
+            <span>Closing</span>
+          </div>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="section-body" id="body-closing">
+          <div class="form-group">
+            <label for="closing-message">Closing Message</label>
+            <textarea id="closing-message" rows="2">Kindly process the payment for the above-mentioned work.</textarea>
+          </div>
+          <div class="form-group">
+            <label for="closing-name">Sign-off Name</label>
+            <input type="text" id="closing-name" placeholder="Auto-filled from sender's name" />
+          </div>
+        </div>
+      </div>
+
+    </aside><!-- end .form-panel -->
+
+    <!-- ──────── PREVIEW PANEL (RIGHT) ──────── -->
+    <div class="preview-panel" id="preview-panel">
+      <div class="preview-toolbar">
+        <div class="preview-label-group">
+          <span class="preview-dot"></span>
+          <span class="preview-label">Live Preview</span>
+        </div>
+        <div class="preview-toolbar-actions">
+          <span class="preview-hint">Updates as you type</span>
+          <button class="btn btn-primary btn-sm" id="preview-dl-btn">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v8M3.5 6.5L6.5 9.5 9.5 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 11h11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            Export PDF
+          </button>
+        </div>
+      </div>
+
+      <div class="preview-scroll-area">
+        <!-- ============ INVOICE PREVIEW ============ -->
+        <div id="invoice-preview" class="invoice-preview">
+
+          <!-- Invoice Title -->
+          <div class="inv-title-bar">
+            <div class="inv-logo-area">
+              <img id="prev-logo" class="prev-logo hidden" alt="Company Logo" />
+            </div>
+            <h1 class="inv-main-title">INVOICE</h1>
+          </div>
+
+          <!-- Meta Row -->
+          <div class="inv-meta">
+            <div class="inv-meta-item">
+              <span class="inv-meta-key">Invoice Number:</span>
+              <span class="inv-meta-val" id="prev-number">—</span>
+            </div>
+            <div class="inv-meta-item">
+              <span class="inv-meta-key">Invoice Date:</span>
+              <span class="inv-meta-val" id="prev-date">—</span>
+            </div>
+          </div>
+
+          <!-- Parties -->
+          <div class="inv-parties">
+            <div class="inv-party">
+              <span class="inv-party-key">From:</span>
+              <div class="inv-party-val" id="prev-from">—</div>
+            </div>
+            <div class="inv-party">
+              <span class="inv-party-key">To:</span>
+              <div class="inv-party-val" id="prev-to">—</div>
+            </div>
+          </div>
+
+          <!-- Subject -->
+          <div class="inv-subject-row" id="prev-subject-row">
+            <span class="inv-subject-key">Subject:</span>
+            <span class="inv-subject-val" id="prev-subject">—</span>
+          </div>
+
+          <!-- Description -->
+          <div class="inv-desc-section">
+            <p id="prev-desc-text" class="inv-desc-para"></p>
+            <ul id="prev-bullets" class="inv-bullets"></ul>
+          </div>
+
+          <!-- Line Items Table -->
+          <table class="inv-table" id="prev-table">
+            <thead>
+              <tr>
+                <th class="inv-th-desc">Description</th>
+                <th class="inv-th-num">Amount (<span class="currency-sym">₹</span>)</th>
+                <th class="inv-th-num">GST %</th>
+                <th class="inv-th-num">GST Amt</th>
+                <th class="inv-th-num">Total</th>
+              </tr>
+            </thead>
+            <tbody id="prev-items-body">
+              <tr class="inv-empty-row">
+                <td colspan="5" style="text-align:center;color:#aaa;font-style:italic;padding:16px 0;">Add line items to see them here</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="inv-tfoot-row inv-subtotal">
+                <td colspan="4" class="inv-tfoot-label">Subtotal</td>
+                <td class="inv-tfoot-val" id="prev-subtotal">—</td>
+              </tr>
+              <tr class="inv-tfoot-row inv-gst">
+                <td colspan="4" class="inv-tfoot-label">Total GST</td>
+                <td class="inv-tfoot-val" id="prev-gst-total">—</td>
+              </tr>
+              <tr class="inv-tfoot-row inv-grand">
+                <td colspan="4" class="inv-tfoot-label inv-grand-label">Total Amount Payable</td>
+                <td class="inv-tfoot-val inv-grand-val" id="prev-grand-total">—</td>
+              </tr>
+            </tfoot>
+          </table>
+
+          <!-- Payment Details -->
+          <div class="inv-payment" id="prev-payment-section">
+            <div class="inv-pay-row" id="prow-mode"><span class="inv-pay-key">Mode of Payment:</span><span class="inv-pay-val" id="prev-pay-mode">—</span></div>
+            <div class="inv-pay-row" id="prow-account"><span class="inv-pay-key">Account Number:</span><span class="inv-pay-val" id="prev-pay-account">—</span></div>
+            <div class="inv-pay-row" id="prow-ifsc"><span class="inv-pay-key">IFSC Code:</span><span class="inv-pay-val" id="prev-pay-ifsc">—</span></div>
+            <div class="inv-pay-row" id="prow-upi"><span class="inv-pay-key">UPI ID:</span><span class="inv-pay-val" id="prev-pay-upi">—</span></div>
+            <div class="inv-pay-row" id="prow-pan"><span class="inv-pay-key">PAN:</span><span class="inv-pay-val" id="prev-pay-pan">—</span></div>
+            <div class="inv-pay-row" id="prow-pemail"><span class="inv-pay-key">Email:</span><span class="inv-pay-val" id="prev-pay-email">—</span></div>
+            <div class="inv-pay-row" id="prow-pphone">
+              <span class="inv-pay-key">Phone Number:</span>
+              <span class="inv-pay-val" id="prev-pay-phone">—</span>
+              <span class="inv-pay-note" id="prev-pay-note"></span>
+            </div>
+          </div>
+
+          <!-- Closing -->
+          <div class="inv-closing">
+            <p id="prev-closing-msg" class="inv-closing-msg">Kindly process the payment for the above-mentioned work.</p>
+            <div class="inv-signoff">
+              <p class="inv-sincerely">Sincerely,</p>
+              <p class="inv-signoff-name" id="prev-closing-name">—</p>
+            </div>
+          </div>
+
+        </div><!-- #invoice-preview -->
+      </div><!-- .preview-scroll-area -->
+    </div><!-- .preview-panel -->
+
+  </main>
+
+  <!-- ═══════════════ AUTH MODAL ═══════════════ -->
+  <div id="auth-modal" class="auth-modal-overlay hidden">
+    <div class="auth-modal-content">
+      <button id="auth-modal-close-btn" class="auth-modal-close" onclick="closeAuthModal()">✕</button>
+      <div class="auth-header">
+        <div class="brand-icon" style="width:36px;height:36px;margin:0 auto 12px;">
+          <svg width="36" height="36" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#e03131"/><rect x="6" y="7" width="10" height="1.8" rx="0.9" fill="white"/><rect x="6" y="11" width="16" height="1.8" rx="0.9" fill="white" opacity="0.7"/><rect x="6" y="15" width="13" height="1.8" rx="0.9" fill="white" opacity="0.7"/><rect x="6" y="19" width="8" height="1.8" rx="0.9" fill="white" opacity="0.5"/><path d="M19 14.5L22.5 18L19 21.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h2 id="auth-title">Welcome Back</h2>
+        <p id="auth-subtitle">Sign in to save and manage your invoices.</p>
+      </div>
+
+      <div class="auth-body">
+        <button id="auth-google-btn" class="btn btn-outline btn-full auth-google-btn" onclick="signInWithGoogle()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.16v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.16C1.43 8.55 1 10.22 1 12s.43 3.45 1.16 4.93l3.68-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.16 7.07l3.68 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          Continue with Google
+        </button>
+
+        <div class="auth-divider">
+          <span>or continue with email</span>
+        </div>
+
+        <form id="auth-form" onsubmit="handleAuthSubmit(event)">
+          <div class="form-group">
+            <label for="auth-email">Email Address</label>
+            <input type="email" id="auth-email" required placeholder="you@example.com" />
+          </div>
+          <div class="form-group" style="margin-bottom: 24px;">
+            <label for="auth-password">Password</label>
+            <input type="password" id="auth-password" required placeholder="••••••••" minlength="6" />
+          </div>
+          <button type="submit" id="auth-submit-btn" class="btn btn-primary btn-full">
+            Sign In
+          </button>
+        </form>
+
+        <div class="auth-footer">
+          <span id="auth-switch-text">Don't have an account?</span>
+          <button id="auth-toggle-btn" type="button" class="btn btn-link" onclick="toggleAuthMode()">Sign Up</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <!-- ═══════════════ SCRIPTS ═══════════════ -->
+  <!-- 1. Supabase SDK (exposes window.supabase module) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- 2. PDF export library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <!-- 3. Auth + landing logic (initialises supabase client, exposes window helpers) -->
+  <script src="auth.js"></script>
+  <!-- 4. Invoice app (uses supabase client set up by auth.js) -->
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "invoice-gen",
+  "version": "1.0.0",
+  "description": "Browser-based Invoice Generator with Supabase Authentication",
+  "scripts": {
+    "start": "npx serve . --listen 3000 --config serve.json",
+    "dev": "npx serve . --listen 3000 --config serve.json"
+  },
+  "keywords": ["invoice", "supabase", "pdf", "generator"],
+  "author": "",
+  "license": "MIT"
+}
